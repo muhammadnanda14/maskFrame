@@ -255,28 +255,28 @@ const frameHandler = frames(async (ctx) => {
   } => {
     const now = new Date();
     const currentDay = now.getDay(); // Sunday is 0, Monday is 1, etc.
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-
-    // Calculate how many days until next Monday
-    const daysUntilMonday = (8 - currentDay) % 7 || 7;
-
-    // Calculate the next Monday at 17:00
-    const nextMondayAtFive = new Date(now);
-    nextMondayAtFive.setDate(now.getDate() + daysUntilMonday);
-    nextMondayAtFive.setHours(17, 0, 0, 0); // Set time to 17:00:00
-
+    
+    let nextMondayAtFive = new Date(now);
+  
+    if (currentDay === 1 && now.getHours() < 17) {
+      // If it's Monday before 17:00, target the same day at 17:00
+      nextMondayAtFive.setHours(17, 0, 0, 0);
+    } else {
+      // Otherwise, calculate the next Monday at 17:00
+      const daysUntilMonday = (8 - currentDay) % 7 || 7;
+      nextMondayAtFive.setDate(now.getDate() + daysUntilMonday);
+      nextMondayAtFive.setHours(17, 0, 0, 0);
+    }
+  
     // Calculate the difference in milliseconds
     const diffMs = nextMondayAtFive.getTime() - now.getTime();
-
-    // Convert milliseconds to days, hours, and minutes
+  
+    // Convert milliseconds to days, hours, minutes, and seconds
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor(
-      (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
+    const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
     const diffSeconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
+  
     return {
       days: diffDays,
       hours: diffHours,
@@ -284,6 +284,7 @@ const frameHandler = frames(async (ctx) => {
       seconds: diffSeconds,
     };
   };
+  
 
   const timeUntilNextMonday = getTimeUntilNextMondayAtFive();
 
@@ -298,11 +299,11 @@ const frameHandler = frames(async (ctx) => {
       <div tw="flex items-center flex-grow">
         <div tw="flex flex-col items-center flex-grow rounded-lg mx-24 pt-40 bg-[#B4D4FF]">
           <div tw="flex mb-6">
-          <img
-                  src="https://clipart.info/images/ccovers/1484942358ios-emoji-performing-arts.png"
-                  tw="w-36"
-                />
-                {/* <div tw="flex text-4xl pl-2 text-blue-800">Masks</div> */}
+            <img
+              src="https://clipart.info/images/ccovers/1484942358ios-emoji-performing-arts.png"
+              tw="w-36"
+            />
+            {/* <div tw="flex text-4xl pl-2 text-blue-800">Masks</div> */}
           </div>
           <div tw="flex text-6xl p-2 mb-6 text-center">
             Check Your Masks Status
@@ -340,7 +341,7 @@ const frameHandler = frames(async (ctx) => {
         <div tw="flex justify-between px-8 align-center items-center">
           <div tw="flex flex-col p-4 -pt-3 mx-auto">
             <div tw="text-4xl font-bold mb-4 text-center items-center justify-center mt-2">
-              Masks Status
+            🎭 Masks Status 🎭
             </div>
             <div tw="flex flex-row justify-between items-center">
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
@@ -350,7 +351,7 @@ const frameHandler = frames(async (ctx) => {
                 </span>
               </div>
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
-                <span tw="text-3xl">Remaining</span>
+                <span tw="text-3xl">Remaining Allowance</span>
                 <span tw="text-4xl">
                   {formatNumberWithCommas(
                     maskBalance?.remainingAllowance || "0"
@@ -363,21 +364,47 @@ const frameHandler = frames(async (ctx) => {
                   {formatNumberWithCommas(maskBalance?.masks || "0")}
                 </span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div tw="flex justify-between px-8 align-center items-center">
+          <div tw="flex flex-col p-4 -pt-3 mx-auto">
+            <div tw="flex flex-row justify-between items-center">
+              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
+                <span tw="text-3xl">Tips of the Week</span>
+                <span tw="text-4xl">
+                {formatNumberWithCommas(maskPerTips?.masksPerTip || "0")}
+                </span>
+              </div>
+              
+              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
+                <span tw="text-3xl">Remaining Tipped</span>
+                <span tw="text-4xl">
+                {formatNumberWithCommas(
+                  (
+                    parseFloat(maskBalance?.remainingAllowance || "0") /
+                    parseFloat(maskPerTips?.masksPerTip || "0")
+                  ).toFixed(2)
+                )}x
+                </span>
+              </div>
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Tipped</span>
                 <span tw="text-4xl">
-                  {formatNumberWithCommas(
-                    (
-                      parseFloat(maskBalance?.weeklyAllowance || "0") -
-                      parseFloat(maskBalance?.remainingAllowance || "0")
-                    ).toFixed(2)
-                  )}
+                {formatNumberWithCommas(
+                  (
+                    parseFloat(maskBalance?.weeklyAllowance || "0") -
+                    parseFloat(maskBalance?.remainingAllowance || "0")
+                  ).toFixed(2)
+                )}
                 </span>
               </div>
             </div>
           </div>
         </div>
 
+      
         <div tw="flex justify-between px-8 align-center items-center">
           <div tw="flex flex-col p-4 -pt-1 mb-2 mx-auto">
             <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
@@ -391,20 +418,6 @@ const frameHandler = frames(async (ctx) => {
           </div>
         </div>
 
-        <div tw="flex justify-between px-8 -pt-20 align-center items-center">
-          <div tw="flex flex-col p-4 -pt-20 mb-2 mx-auto">
-            <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
-            <span tw="text-3xl">Tip of the week</span>
-              <span tw="text-4xl">
-                {formatNumberWithCommas(maskPerTips?.masksPerTip || "0")}
-              </span>
-            </div>
-          </div>
-        </div>
-
-     
-
-   
         {/* <div tw="flex justify-between px-8 align-center items-center">
           <div tw="flex flex-col border-2 border-blue-800 p-4 -pt-1 mb-4 mx-auto">
             <div tw="text-3xl font-bold mb-4 text-center items-center justify-center">
@@ -456,7 +469,7 @@ const frameHandler = frames(async (ctx) => {
           </div>
         </div> */}
 
-        <div tw="flex px-8 -mt-1 text-right justify-end">
+        <div tw="flex px-8 mt-2 text-right justify-end">
           <div tw="flex text-2xl">by @blacknoys</div>
         </div>
       </div>
@@ -464,7 +477,7 @@ const frameHandler = frames(async (ctx) => {
   };
 
   const shareText = encodeURIComponent(
-    "Check your Masks Status! frame made by @blacknoys"
+    "Check your Masks status here 🎭! frame made by @blacknoys"
   );
 
   // Change the url here
