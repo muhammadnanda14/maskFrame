@@ -44,8 +44,8 @@ const frameHandler = frames(async (ctx) => {
     name: string;
     username: string;
     fid: string;
-    socialCapitalScore: string;
-    socialCapitalRank: string;
+    // socialCapitalScore: string;
+    // socialCapitalRank: string;
     profileDisplayName: string;
     isPowerUser: boolean;
     profileImageUrl: string;
@@ -85,9 +85,9 @@ const frameHandler = frames(async (ctx) => {
           username: social.profileName || "unknown",
           fid: social.userId || "N/A",
           profileDisplayName: social.profileDisplayName || "N/A",
-          socialCapitalScore:
-            social.socialCapital?.socialCapitalScore?.toFixed(3) || "N/A",
-          socialCapitalRank: social.socialCapital?.socialCapitalRank || "N/A",
+          // socialCapitalScore:
+          //   social.socialCapital?.socialCapitalScore?.toFixed(3) || "N/A",
+          // socialCapitalRank: social.socialCapital?.socialCapitalRank || "N/A",
           isPowerUser: social.isFarcasterPowerUser || false,
           profileImageUrl:
             social.profileImageContentValue?.image?.extraSmall ||
@@ -102,22 +102,6 @@ const frameHandler = frames(async (ctx) => {
       error = (err as Error).message;
     } finally {
       isLoading = false;
-    }
-  };
-
-  const fetchMoxieData = async (fid: string) => {
-    try {
-      const moxieUrl = `${appURL()}/api/moxie-earnings?entityId=${encodeURIComponent(
-        fid
-      )}`;
-      const moxieResponse = await fetch(moxieUrl);
-      if (!moxieResponse.ok) {
-        throw new Error(`Moxie HTTP error! status: ${moxieResponse.status}`);
-      }
-      moxieData = await moxieResponse.json();
-    } catch (err) {
-      console.error("Error fetching Moxie data:", err);
-      error = (err as Error).message;
     }
   };
 
@@ -187,18 +171,7 @@ const frameHandler = frames(async (ctx) => {
     }
   };
 
-  const fetchMoxiePrice = async () => {
-    try {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/simple/price?ids=moxie&vs_currencies=usd"
-      );
-      const data = await response.json();
-      moxiePrice = data.moxie?.usd || 0;
-    } catch (err) {
-      console.error("Error fetching Moxie price:", err);
-      error = (err as Error).message;
-    }
-  };
+ 
 
   const extractFid = (url: string): string | null => {
     try {
@@ -238,14 +211,27 @@ const frameHandler = frames(async (ctx) => {
   if (shouldFetchData && fid) {
     await Promise.all([
       fetchUserData(fid),
-      fetchMoxieData(fid),
       fetchMaskBalance(fid),
       fetchMaskRank(fid),
       // fetchMaskTips(fid),
       fetchMaskPerTips(fid),
-      fetchMoxiePrice(),
     ]);
   }
+
+  const getCurrentUTCTime = (): string => {
+    const now = new Date();
+  
+    // Get UTC components
+    const year = now.getUTCFullYear();
+    const month = String(now.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+    const day = String(now.getUTCDate()).padStart(2, '0');
+    const hours = String(now.getUTCHours()).padStart(2, '0');
+    const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+  
+    // Return formatted UTC string
+    return `${day}-${month}-${year}, ${hours}:${minutes}:${seconds} UTC`;
+  };
 
   const getTimeUntilNextMondayAtFive = (): {
     days: number;
@@ -287,6 +273,7 @@ const frameHandler = frames(async (ctx) => {
   
 
   const timeUntilNextMonday = getTimeUntilNextMondayAtFive();
+  const dateNow = getCurrentUTCTime()
 
   const formatNumberWithCommas = (numberString: string) => {
     const number = parseInt(numberString, 10);
@@ -316,7 +303,6 @@ const frameHandler = frames(async (ctx) => {
 
   const ScoreScreen = () => {
     return (
-      // pake dolar buat next update anjay
       <div tw="flex flex-col w-full h-full bg-[#B4D4FF] text-blue-800 font-sans">
         <div tw="flex items-center px-8 pt-4 bg-[#B4D4FF] justify-between mr-4">
           <div tw="flex items-center">
@@ -469,9 +455,12 @@ const frameHandler = frames(async (ctx) => {
           </div>
         </div> */}
 
-        <div tw="flex px-8 mt-2 text-right justify-end">
-          <div tw="flex text-2xl">by @blacknoys</div>
-        </div>
+
+      <div tw="flex px-8 mt-2 text-2xl justify-between">
+  <div>{dateNow}</div>
+  <div>by @blacknoys</div>
+</div>
+
       </div>
     );
   };
