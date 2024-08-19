@@ -171,8 +171,6 @@ const frameHandler = frames(async (ctx) => {
     }
   };
 
- 
-
   const extractFid = (url: string): string | null => {
     try {
       const parsedUrl = new URL(url);
@@ -220,15 +218,15 @@ const frameHandler = frames(async (ctx) => {
 
   const getCurrentUTCTime = (): string => {
     const now = new Date();
-  
+
     // Get UTC components
     const year = now.getUTCFullYear();
-    const month = String(now.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
-    const day = String(now.getUTCDate()).padStart(2, '0');
-    const hours = String(now.getUTCHours()).padStart(2, '0');
-    const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-    const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-  
+    const month = String(now.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
+    const day = String(now.getUTCDate()).padStart(2, "0");
+    const hours = String(now.getUTCHours()).padStart(2, "0");
+    const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+    const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+
     // Return formatted UTC string
     return `${day}-${month}-${year}, ${hours}:${minutes}:${seconds} UTC`;
   };
@@ -240,18 +238,18 @@ const frameHandler = frames(async (ctx) => {
     seconds: number;
   } => {
     const now = new Date();
-    const currentDay = now.getDay(); // Sunday is 0, Monday is 1, etc.
-    
+    const currentDay = now.getUTCDay(); // Sunday is 0, Monday is 1, etc.
+  
     let nextMondayAtFive = new Date(now);
   
-    if (currentDay === 1 && now.getHours() < 17) {
-      // If it's Monday before 17:00, target the same day at 17:00
-      nextMondayAtFive.setHours(17, 0, 0, 0);
+    if (currentDay === 1 && now.getUTCHours() < 10) {
+      // If it's Monday before 17:00 WIB (10:00 UTC), target the same day at 10:00 UTC
+      nextMondayAtFive.setUTCHours(10, 0, 0, 0); // 10:00 UTC is 17:00 WIB
     } else {
-      // Otherwise, calculate the next Monday at 17:00
+      // Otherwise, calculate the next Monday at 17:00 WIB (10:00 UTC)
       const daysUntilMonday = (8 - currentDay) % 7 || 7;
-      nextMondayAtFive.setDate(now.getDate() + daysUntilMonday);
-      nextMondayAtFive.setHours(17, 0, 0, 0);
+      nextMondayAtFive.setUTCDate(now.getUTCDate() + daysUntilMonday);
+      nextMondayAtFive.setUTCHours(10, 0, 0, 0); // 10:00 UTC is 17:00 WIB
     }
   
     // Calculate the difference in milliseconds
@@ -259,7 +257,9 @@ const frameHandler = frames(async (ctx) => {
   
     // Convert milliseconds to days, hours, minutes, and seconds
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const diffHours = Math.floor(
+      (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
     const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
     const diffSeconds = Math.floor((diffMs % (1000 * 60)) / 1000);
   
@@ -273,7 +273,7 @@ const frameHandler = frames(async (ctx) => {
   
 
   const timeUntilNextMonday = getTimeUntilNextMondayAtFive();
-  const dateNow = getCurrentUTCTime()
+  const dateNow = getCurrentUTCTime();
 
   const formatNumberWithCommas = (numberString: string) => {
     const number = parseInt(numberString, 10);
@@ -327,7 +327,7 @@ const frameHandler = frames(async (ctx) => {
         <div tw="flex justify-between px-8 align-center items-center">
           <div tw="flex flex-col p-4 -pt-3 mx-auto">
             <div tw="text-4xl font-bold mb-4 text-center items-center justify-center mt-2">
-            🎭 Masks Status 🎭
+              🎭 Masks Status 🎭
             </div>
             <div tw="flex flex-row justify-between items-center">
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
@@ -360,37 +360,37 @@ const frameHandler = frames(async (ctx) => {
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Tips of the Week</span>
                 <span tw="text-4xl">
-                {formatNumberWithCommas(maskPerTips?.masksPerTip || "0")}
+                  {formatNumberWithCommas(maskPerTips?.masksPerTip || "0")}
                 </span>
               </div>
-              
+
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Remaining Tipped</span>
                 <span tw="text-4xl">
-                {formatNumberWithCommas(
-                  (
-                    parseFloat(maskBalance?.remainingAllowance || "0") /
-                    parseFloat(maskPerTips?.masksPerTip || "0")
-                  ).toFixed(2)
-                )}x
+                  {formatNumberWithCommas(
+                    (
+                      parseFloat(maskBalance?.remainingAllowance || "0") /
+                      parseFloat(maskPerTips?.masksPerTip || "0")
+                    ).toFixed(2)
+                  )}
+                  x
                 </span>
               </div>
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Tipped</span>
                 <span tw="text-4xl">
-                {formatNumberWithCommas(
-                  (
-                    parseFloat(maskBalance?.weeklyAllowance || "0") -
-                    parseFloat(maskBalance?.remainingAllowance || "0")
-                  ).toFixed(2)
-                )}
+                  {formatNumberWithCommas(
+                    (
+                      parseFloat(maskBalance?.weeklyAllowance || "0") -
+                      parseFloat(maskBalance?.remainingAllowance || "0")
+                    ).toFixed(2)
+                  )}
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-      
         <div tw="flex justify-between px-8 align-center items-center">
           <div tw="flex flex-col p-4 -pt-1 mb-2 mx-auto">
             <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
@@ -455,12 +455,10 @@ const frameHandler = frames(async (ctx) => {
           </div>
         </div> */}
 
-
-      <div tw="flex px-8 mt-2 text-2xl justify-between">
-  <div>{dateNow}</div>
-  <div>by @blacknoys</div>
-</div>
-
+        <div tw="flex px-8 mt-2 text-2xl justify-between">
+          <div>{dateNow}</div>
+          <div>by @blacknoys</div>
+        </div>
       </div>
     );
   };
