@@ -6,11 +6,6 @@ interface State {
   lastFid?: string;
 }
 
-interface MoxieData {
-  today: { allEarningsAmount: string };
-  weekly: { allEarningsAmount: string };
-  lifetime: { allEarningsAmount: string };
-}
 
 interface MaskBalance {
   username: string;
@@ -47,17 +42,13 @@ const frameHandler = frames(async (ctx) => {
     // socialCapitalScore: string;
     // socialCapitalRank: string;
     profileDisplayName: string;
-    isPowerUser: boolean;
     profileImageUrl: string;
   }
 
   let userData: UserData | null = null;
-  let moxieData: MoxieData | null = null;
   let maskBalance: MaskBalance | null = null;
   let maskRank: MaskRank | null = null;
   let maskPerTips: MaskPerTips | null = null;
-  let maskTips: MaskTips | null = null;
-  let moxiePrice: number | null = null;
   let error: string | null = null;
   let isLoading = false;
 
@@ -85,10 +76,6 @@ const frameHandler = frames(async (ctx) => {
           username: social.profileName || "unknown",
           fid: social.userId || "N/A",
           profileDisplayName: social.profileDisplayName || "N/A",
-          // socialCapitalScore:
-          //   social.socialCapital?.socialCapitalScore?.toFixed(3) || "N/A",
-          // socialCapitalRank: social.socialCapital?.socialCapitalRank || "N/A",
-          isPowerUser: social.isFarcasterPowerUser || false,
           profileImageUrl:
             social.profileImageContentValue?.image?.extraSmall ||
             social.profileImage ||
@@ -119,22 +106,6 @@ const frameHandler = frames(async (ctx) => {
       maskBalance = await balanceResponse.json();
     } catch (err) {
       console.error("Error fetching Mask Balance:", err);
-      error = (err as Error).message;
-    }
-  };
-
-  const fetchMaskTips = async (fid: string) => {
-    try {
-      const tipsUrl = `https://app.masks.wtf/api/tips/recent?fid=${encodeURIComponent(
-        fid
-      )}`;
-      const tipsResponse = await fetch(tipsUrl);
-      if (!tipsResponse.ok) {
-        throw new Error(`Mask Tips HTTP error! status: ${tipsResponse.status}`);
-      }
-      maskTips = await tipsResponse.json();
-    } catch (err) {
-      console.error("Error fetching Mask Tips:", err);
       error = (err as Error).message;
     }
   };
@@ -479,6 +450,9 @@ const frameHandler = frames(async (ctx) => {
       <Button action="post" target={{ href: `${appURL()}?userfid=${fid}` }}>
         Check Status
       </Button>,
+      // <Button action="post" target={{ href: `${appURL()}?userfid=${fid}` }}>
+      //   Check Status
+      // </Button>,
       <Button action="link" target={shareUrl}>
         Share
       </Button>
