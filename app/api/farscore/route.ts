@@ -24,10 +24,7 @@ query GetUserSocialCapital($userId: String!) {
           extraSmall
         }
       }
-      socialCapital {
-        socialCapitalScore
-        socialCapitalRank
-      }
+      
     }
   }
 }
