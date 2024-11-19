@@ -39,8 +39,6 @@ const frameHandler = frames(async (ctx) => {
     name: string;
     username: string;
     fid: string;
-    // socialCapitalScore: string;
-    // socialCapitalRank: string;
     profileDisplayName: string;
     profileImageUrl: string;
   }
@@ -182,7 +180,6 @@ const frameHandler = frames(async (ctx) => {
       fetchUserData(fid),
       fetchMaskBalance(fid),
       fetchMaskRank(fid),
-      // fetchMaskTips(fid),
       fetchMaskPerTips(fid),
     ]);
   }
@@ -190,15 +187,13 @@ const frameHandler = frames(async (ctx) => {
   const getCurrentUTCTime = (): string => {
     const now = new Date();
 
-    // Get UTC components
     const year = now.getUTCFullYear();
-    const month = String(now.getUTCMonth() + 1).padStart(2, "0"); // Months are zero-indexed, so add 1
+    const month = String(now.getUTCMonth() + 1).padStart(2, "0"); 
     const day = String(now.getUTCDate()).padStart(2, "0");
     const hours = String(now.getUTCHours()).padStart(2, "0");
     const minutes = String(now.getUTCMinutes()).padStart(2, "0");
     const seconds = String(now.getUTCSeconds()).padStart(2, "0");
 
-    // Return formatted UTC string
     return `${day}-${month}-${year}, ${hours}:${minutes}:${seconds} UTC`;
   };
 
@@ -209,24 +204,21 @@ const frameHandler = frames(async (ctx) => {
     seconds: number;
   } => {
     const now = new Date();
-    const currentDay = now.getUTCDay(); // Sunday is 0, Monday is 1, etc.
+    const currentDay = now.getUTCDay();
   
     let nextMondayAtFive = new Date(now);
   
     if (currentDay === 1 && now.getUTCHours() < 10) {
-      // If it's Monday before 17:00 WIB (10:00 UTC), target the same day at 10:00 UTC
-      nextMondayAtFive.setUTCHours(10, 0, 0, 0); // 10:00 UTC is 17:00 WIB
+      nextMondayAtFive.setUTCHours(10, 0, 0, 0); 
     } else {
-      // Otherwise, calculate the next Monday at 17:00 WIB (10:00 UTC)
+      
       const daysUntilMonday = (8 - currentDay) % 7 || 7;
       nextMondayAtFive.setUTCDate(now.getUTCDate() + daysUntilMonday);
-      nextMondayAtFive.setUTCHours(10, 0, 0, 0); // 10:00 UTC is 17:00 WIB
+      nextMondayAtFive.setUTCHours(10, 0, 0, 0); 
     }
   
-    // Calculate the difference in milliseconds
     const diffMs = nextMondayAtFive.getTime() - now.getTime();
   
-    // Convert milliseconds to days, hours, minutes, and seconds
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     const diffHours = Math.floor(
       (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -261,7 +253,6 @@ const frameHandler = frames(async (ctx) => {
               src="https://clipart.info/images/ccovers/1484942358ios-emoji-performing-arts.png"
               tw="w-36"
             />
-            {/* <div tw="flex text-4xl pl-2 text-blue-800">Masks</div> */}
           </div>
           <div tw="flex text-6xl p-2 mb-6 text-center">
             Check Your Masks Status
@@ -375,57 +366,6 @@ const frameHandler = frames(async (ctx) => {
           </div>
         </div>
 
-        {/* <div tw="flex justify-between px-8 align-center items-center">
-          <div tw="flex flex-col border-2 border-blue-800 p-4 -pt-1 mb-4 mx-auto">
-            <div tw="text-3xl font-bold mb-4 text-center items-center justify-center">
-              Tipped Recent
-            </div>
-            <div tw="flex flex-row justify-between items-center">
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
-                <span tw="text-2xl">Today</span>
-                <span tw="text-4xl">
-                {maskTips?.sent.amount}
-                </span>
-                <span tw="text-3xl text-green-500">
-                {maskTips?.sent.receiverName}
-                </span>
-              </div>
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
-                <span tw="text-2xl">Weekly</span>
-                <span tw="text-4xl">
-                  {formatNumber(
-                    parseFloat(moxieData?.weekly.allEarningsAmount || "0")
-                  )}{" "}
-                  Moxie
-                </span>
-                <span tw="text-3xl text-green-500">
-                  ${" "}
-                  {convertToUSD(
-                    moxieData?.weekly.allEarningsAmount || "0"
-                  ).toFixed(3)}{" "}
-                  USD
-                </span>
-              </div>
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
-                <span tw="text-2xl">Lifetime</span>
-                <span tw="text-4xl">
-                  {formatNumber(
-                    parseFloat(moxieData?.lifetime.allEarningsAmount || "0")
-                  )}{" "}
-                  Moxie
-                </span>
-                <span tw="text-3xl text-green-500">
-                  ${" "}
-                  {convertToUSD(
-                    moxieData?.lifetime.allEarningsAmount || "0"
-                  ).toFixed(3)}{" "}
-                  USD
-                </span>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
         <div tw="flex px-8 mt-2 text-2xl justify-between">
           <div>{dateNow}</div>
           <div>by @blacknoys</div>
@@ -438,7 +378,6 @@ const frameHandler = frames(async (ctx) => {
     "Check your Masks status here 🎭! frame made by @blacknoys"
   );
 
-  // Change the url here
   const shareUrl = `https://warpcast.com/~/compose?text=${shareText}&embeds[]=https://masksframe.vercel.app/frames${
     fid ? `?userfid=${fid}` : ""
   }`;
@@ -450,9 +389,6 @@ const frameHandler = frames(async (ctx) => {
       <Button action="post" target={{ href: `${appURL()}?userfid=${fid}` }}>
         Check Status
       </Button>,
-      // <Button action="post" target={{ href: `${appURL()}?userfid=${fid}` }}>
-      //   Check Status
-      // </Button>,
       <Button action="link" target={shareUrl}>
         Share
       </Button>
