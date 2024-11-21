@@ -18,10 +18,10 @@ export async function generateMetadata({
   const castActionUrl = new URL("/api/cast-action", appURL());
 
   return {
-    title: "Moxie Stats Frame ",
+    title: "Masks Stats Frame ",
     description: "use this as a building block for frames.",
     openGraph: {
-      title: "MoxieFrame",
+      title: "Masks Frame",
       description: "use this as a building block for frames.",
       images: [`${framesUrl.origin}/api/og`],
     },
@@ -34,5 +34,5 @@ export async function generateMetadata({
 }
 
 export default function Page() {
-  return <span>Loading Moxie Frame...</span>;
+  return <span>Loading Masks Frame...</span>;
 }
