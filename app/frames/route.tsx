@@ -255,7 +255,7 @@ const frameHandler = frames(async (ctx) => {
             />
           </div>
           <div tw="flex text-6xl p-2 mb-6 text-center">
-            Check Your Masks Status
+            Check Your Masks Stats
           </div>
           <div tw="flex text-5xl p-2 mt-10 text-center">by @blacknoys</div>
         </div>
@@ -375,7 +375,7 @@ const frameHandler = frames(async (ctx) => {
   };
 
   const shareText = encodeURIComponent(
-    "Check your Masks status here 🎭! frame made by @blacknoys"
+    "Check your Masks stats here 🎭! frame made by @blacknoys"
   );
 
   const shareUrl = `https://warpcast.com/~/compose?text=${shareText}&embeds[]=https://masksframe.vercel.app/frames${
