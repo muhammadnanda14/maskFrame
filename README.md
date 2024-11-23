@@ -1,1 +1,1 @@
-This Frame for get data $MASKS from user Warpcast
+This Frame for get datas airdrop $MASKS from user Warpcast
