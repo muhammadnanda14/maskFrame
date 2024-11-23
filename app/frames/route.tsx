@@ -294,13 +294,13 @@ const frameHandler = frames(async (ctx) => {
             <div tw="flex flex-row justify-between items-center">
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Weekly Allowance</span>
-                <span tw="text-4xl">
+                <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(maskBalance?.weeklyAllowance || "0")}
                 </span>
               </div>
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Remaining Allowance</span>
-                <span tw="text-4xl">
+                <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(
                     maskBalance?.remainingAllowance || "0"
                   )}
@@ -308,7 +308,7 @@ const frameHandler = frames(async (ctx) => {
               </div>
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Points</span>
-                <span tw="text-4xl">
+                <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(maskBalance?.masks || "0")}
                 </span>
               </div>
@@ -321,14 +321,14 @@ const frameHandler = frames(async (ctx) => {
             <div tw="flex flex-row justify-between items-center">
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Tips of the Week</span>
-                <span tw="text-4xl">
+                <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(maskPerTips?.masksPerTip || "0")}
                 </span>
               </div>
 
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Remaining Tipped</span>
-                <span tw="text-4xl">
+                <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(
                     (
                       parseFloat(maskBalance?.remainingAllowance || "0") /
@@ -340,7 +340,7 @@ const frameHandler = frames(async (ctx) => {
               </div>
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Tipped</span>
-                <span tw="text-4xl">
+                <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(
                     (
                       parseFloat(maskBalance?.weeklyAllowance || "0") -
