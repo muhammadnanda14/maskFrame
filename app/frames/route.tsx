@@ -47,7 +47,6 @@ const frameHandler = frames(async (ctx) => {
   let maskBalance: MaskBalance | null = null;
   let maskRank: MaskRank | null = null;
   let maskPerTips: MaskPerTips | null = null;
-  let error: string | null = null;
   let isLoading = false;
 
   const fetchUserData = async (fid: string) => {
