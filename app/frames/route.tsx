@@ -374,7 +374,7 @@ const frameHandler = frames(async (ctx) => {
   };
 
   const shareText = encodeURIComponent(
-    "Check your Masks stats here 🎭! frame made by @blacknoys"
+    "Check your Masks stats here 🎭! if you like this frame, share and follow @blacknoys"
   );
 
   const shareUrl = `https://warpcast.com/~/compose?text=${shareText}&embeds[]=https://masksframe.vercel.app/frames${
@@ -389,7 +389,7 @@ const frameHandler = frames(async (ctx) => {
         Check Status
       </Button>,
       <Button action="link" target={shareUrl}>
-        Share
+        Cast it
       </Button>
     );
   } else {
@@ -398,7 +398,7 @@ const frameHandler = frames(async (ctx) => {
         My Stats
       </Button>,
       <Button action="link" target={shareUrl}>
-        Share
+        Cast it
       </Button>
     );
   }
