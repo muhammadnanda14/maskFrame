@@ -279,8 +279,8 @@ const frameHandler = frames(async (ctx) => {
           </div>
           <div tw="flex flex-row justify-end">
             <div tw="flex flex-col items-end mt-1">
-              <span tw="text-2xl">FID: {maskBalance?.fid}</span>
-              <span tw="text-2xl">Rank: {maskRank?.rank}</span>
+              <span tw="text-2xl">FID: <span tw="text-[#000000]">{maskBalance?.fid}</span></span>
+              <span tw="text-2xl">Rank: <span tw="text-[#000000]">{maskRank?.rank}</span></span>
             </div>
           </div>
         </div>
@@ -389,7 +389,7 @@ const frameHandler = frames(async (ctx) => {
         Check Status
       </Button>,
       <Button action="link" target={shareUrl}>
-        Cast it
+        Share
       </Button>
     );
   } else {
@@ -398,7 +398,7 @@ const frameHandler = frames(async (ctx) => {
         My Stats
       </Button>,
       <Button action="link" target={shareUrl}>
-        Cast it
+        Share
       </Button>
     );
   }
