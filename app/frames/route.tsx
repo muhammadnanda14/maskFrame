@@ -257,7 +257,7 @@ const frameHandler = frames(async (ctx) => {
           <div tw="flex text-6xl p-2 mb-6 text-center">
             Check Your Masks Stats
           </div>
-          <div tw="flex text-5xl p-2 mt-10 text-center">by @blacknoys</div>
+          <div tw="flex text-5xl p-2 mt-10 text-center">Frame created by @blacknoys</div>
         </div>
       </div>
     </div>
@@ -289,7 +289,7 @@ const frameHandler = frames(async (ctx) => {
         <div tw="flex justify-between px-8 align-center items-center">
           <div tw="flex flex-col p-4 -pt-3 mx-auto">
             <div tw="text-4xl font-bold mb-4 text-center items-center justify-center mt-2">
-              🎭 Masks Status 🎭
+              🎭 MASKS STATS 🎭
             </div>
             <div tw="flex flex-row justify-between items-center">
               <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
@@ -368,7 +368,7 @@ const frameHandler = frames(async (ctx) => {
 
         <div tw="flex px-8 mt-2 text-2xl justify-between">
           <div>{dateNow}</div>
-          <div>by @blacknoys</div>
+          <div>Frame created by @blacknoys</div>
         </div>
       </div>
     );
