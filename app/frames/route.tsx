@@ -291,14 +291,14 @@ const frameHandler = frames(async (ctx) => {
             <div tw="text-4xl font-bold mb-4 text-center items-center justify-center mt-2">
               🎭 MASKS STATS 🎭
             </div>
-            <div tw="flex flex-row justify-between items-center">
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
+            <div tw="flex flex-row justify-between items-center w-19/20">
+              <div tw="flex w-1/3 flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Weekly Allowance</span>
                 <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(maskBalance?.weeklyAllowance || "0")}
                 </span>
               </div>
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
+              <div tw="flex flex-col w-1/3 items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Remaining Allowance</span>
                 <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(
@@ -306,7 +306,7 @@ const frameHandler = frames(async (ctx) => {
                   )}
                 </span>
               </div>
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
+              <div tw="flex flex-col w-1/3 items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Points</span>
                 <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(maskBalance?.masks || "0")}
@@ -318,15 +318,15 @@ const frameHandler = frames(async (ctx) => {
 
         <div tw="flex justify-between px-8 align-center items-center">
           <div tw="flex flex-col p-4 -pt-3 mx-auto">
-            <div tw="flex flex-row justify-between items-center">
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
+            <div tw="flex flex-row justify-between items-center w-19/20">
+              <div tw="flex flex-col w-1/3 items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Tips of the Week</span>
                 <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(maskPerTips?.masksPerTip || "0")}
                 </span>
               </div>
 
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
+              <div tw="flex flex-col w-1/3 items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Remaining Tipped</span>
                 <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(
@@ -338,7 +338,7 @@ const frameHandler = frames(async (ctx) => {
                   x
                 </span>
               </div>
-              <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
+              <div tw="flex flex-col w-1/3 items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
                 <span tw="text-3xl">Tipped</span>
                 <span tw="text-4xl text-[#ff2d00]">
                   {formatNumberWithCommas(
@@ -354,7 +354,7 @@ const frameHandler = frames(async (ctx) => {
         </div>
 
         <div tw="flex justify-between px-8 align-center items-center">
-          <div tw="flex flex-col p-4 -pt-1 mb-2 mx-auto">
+          <div tw="flex flex-col p-4 -pt-1 mb-2 mx-auto w-99/100">
             <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
               <span tw="text-3xl">Reset Time</span>
               <span tw="text-4xl">
