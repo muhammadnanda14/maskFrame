@@ -356,7 +356,7 @@ const frameHandler = frames(async (ctx) => {
           <div tw="flex flex-col p-4 -pt-1 mb-2 mx-auto w-99/100">
             <div tw="flex flex-col items-center justify-center rounded-lg border-4 p-2 mx-2 py-2 bg-white bg-opacity-90">
               <span tw="text-3xl">Reset Time</span>
-              <span tw="text-4xl">
+              <span tw="text-4xl text-[#000000]">
                 {timeUntilNextMonday.days} days, {timeUntilNextMonday.hours}{" "}
                 hours, {timeUntilNextMonday.minutes} minutes,{" "}
                 {timeUntilNextMonday.seconds} seconds
@@ -365,7 +365,7 @@ const frameHandler = frames(async (ctx) => {
           </div>
         </div>
 
-        <div tw="flex px-8 mt-2 text-2xl justify-between">
+        <div tw="flex px-8 mb-2 ml-7 text-2xl justify-between w-95/100">
           <div>{dateNow}</div>
           <div>Frame created by @blacknoys</div>
         </div>
