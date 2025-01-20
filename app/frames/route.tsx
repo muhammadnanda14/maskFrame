@@ -271,7 +271,7 @@ const frameHandler = frames(async (ctx) => {
             <img
               src={userData?.profileImageUrl}
               alt="Profile"
-              tw="w-20 h-20 rounded-full mr-4"
+              tw="w-20 h-20 rounded-full mr-4 ml-6"
             />
             <div tw="flex flex-col mb-1">
               <span tw="flex text-4xl">{userData?.profileDisplayName}</span>
